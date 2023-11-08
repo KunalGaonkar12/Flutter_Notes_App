@@ -2,47 +2,37 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notesapp/models/note_model.dart';
-import 'package:notesapp/services/api_services.dart';
+import 'package:models/hive_helper.dart';
+import 'package:models/note/note.dart';
+import 'package:repositories/repositories.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../services/connection_manager.dart';
 
 class NoteProvider with ChangeNotifier {
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
 
+  bool validate = false;
+
   Note tempNote=Note();
-  List<Note> allNotes = [];
-  String msg="";
-
-
-  // NoteProvider() {
-  //   fetchNotes("Kunal Gaonkar");
-  // }
+  List<Note?> allNotes = [];
 
   List<String> colors=[
-    "0xffE0754F","0xffF7D44C","0xff48D0E2","0xff4AD3B0"
+    "0xffE0754F","0xffDF5970","0xffF59138","0xff3E9399","0xff71B578","0xffF7D44C","0xff48D0E2","0xff4AD3B0","0xff238ft6","0xff23AFD6"
   ];
 
 
-  Future<String> fetchData()async {
-    bool isConnected= await  ConnectionManager.isConnected() ;
-    if(isConnected){
-       print("Is connected");
-       fetchNotes("Kunal Gaonkar");
-       return "";
-     }else{
-       print("not connected");
-       return "Please turn on internet";
-     }
+  Future<void> fetchData()async {
+    allNotes=
+    await NoteRepository().fetchNotes(BoxName.note);
+    notifyListeners();
   }
 
 
   void init() async {
     titleController.clear();
     contentController.clear();
-    msg=await fetchData();
+    await fetchData();
     tempNote=Note();
   }
 
@@ -52,45 +42,46 @@ class NoteProvider with ChangeNotifier {
       newNote=tempNote;
       newNote.title=titleController.text;
       newNote.content = contentController.text;
+      await saveNote(newNote);
     }else{
       newNote.dateAdded = DateTime.now();
       newNote.id = const Uuid().v1();
       newNote.userId = "Kunal Gaonkar";
       newNote.title = titleController.text;
       newNote.content = contentController.text;
-      // newNote.color=int.parse(colors[Random().nextInt(colors.length)]);
+      newNote.color=int.parse(colors[Random().nextInt(colors.length)]);
+      // final Random random = Random();
+      // print(random.nextInt(0xffffff));
+      // newNote.color=(random.nextInt(0xffffff));
+      await saveNote(newNote);
+
     }
-    await saveNote(newNote);
+
     notifyListeners();
   }
-
-  Future<void> fetchNotes(String id) async{
-    allNotes= await ApiServices.fetchNote(id);
-    notifyListeners();
-  }
-
 
 
   Future<void> saveNote(Note newNote) async {
-    int index = allNotes.indexWhere((element) => element.id == newNote.id);
+    int index = allNotes.indexWhere((element) => element?.id == newNote.id);
     if (index > -1) {
-      allNotes[index] = newNote;
+      // allNotes[index] = newNote;
+      await NoteRepository().editNote(index,newNote,BoxName.note);
     } else {
-      allNotes.add(newNote);
-
+      // allNotes.add(newNote);
+      await NoteRepository().createNote(newNote, BoxName.note);
     }
+    await fetchData();
     notifyListeners();
-    await ApiServices.addNote(newNote);
+
   }
 
   Future<void> deleteNote(String? id) async {
-    int index = allNotes.indexWhere((element) => element.id == id);
+    int index = allNotes.indexWhere((element) => element?.id == id);
     if (index > -1) {
-      allNotes.removeAt(index);
-      notifyListeners();
-      await ApiServices.deleteNote(id);
+      await NoteRepository().deleteNote(index, BoxName.note);
+      await fetchData();
     }
-
+    notifyListeners();
   }
 
 

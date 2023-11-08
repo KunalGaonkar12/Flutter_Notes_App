@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:notesapp/models/note_model.dart';
+import 'package:models/note/note.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
