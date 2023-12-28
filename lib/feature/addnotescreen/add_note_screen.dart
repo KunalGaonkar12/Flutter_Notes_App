@@ -35,8 +35,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Widget build(BuildContext context) {
     FocusNode noteFocus = FocusNode();
     NoteProvider noteProv= Provider.of<NoteProvider>(context);
-
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -48,7 +46,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         backgroundColor: Colors.black,
         actions: [
           IconButton(onPressed: ()async {
-
             if(_formFieldKey1.currentState?.validate()==true){
               await  noteProv.addNote(isUpdate: widget.isUpdate);
                 Navigator.pop(context);
