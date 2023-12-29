@@ -44,43 +44,13 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         backgroundColor: Colors.black,
         actions: [
           IconButton(onPressed: ()async {
-           await  noteProv.addNote(isUpdate: widget.isUpdate);
-         Navigator.pop(context);
-
-         }, icon: const Icon(Icons.check))
+          bool isAdded =await noteProv.addNote(isUpdate: widget.isUpdate);
+          if(isAdded){
+            Navigator.pop(context);
+          }
+          }, icon: const Icon(Icons.check))
         ],
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Colors.blue,
-      //   notchMargin: 10,
-      //   child: IconTheme(
-      //     data: const IconThemeData(color: Colors.white, size: 36),
-      //     child: Padding(
-      //       padding: const EdgeInsets.symmetric(horizontal: 15),
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //         children: [
-      //           IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
-      //           const SizedBox(
-      //             width: 10,
-      //           ),
-      //           IconButton(
-      //               onPressed: () {}, icon: const Icon(Icons.check)),
-      //           const SizedBox(
-      //             width: 10,
-      //           ),
-      //           IconButton(onPressed: () {
-      //             Navigator.pop(context);
-      //           }, icon: const Icon(Icons.clear)),
-      //           const SizedBox(
-      //             width: 10,
-      //           ),
-      //           // IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(

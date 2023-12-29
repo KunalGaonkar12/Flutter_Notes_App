@@ -6,7 +6,8 @@ import 'package:notesapp/models/note_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String _baseUrl = "http://10.0.2.2:5000/notes";
+  // static String _baseUrl = "http://10.0.2.2:5000/notes";
+  static String _baseUrl = "https://awful-moth-capris.cyclic.app/notes";
 
 
 

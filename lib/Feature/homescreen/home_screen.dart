@@ -23,11 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     NoteProvider noteProv = Provider.of<NoteProvider>(context, listen: false);
     noteProv.init();
-    if (noteProv.msg.isEmpty) {
-      AlertDialog(
-        title: Text("test"),
-      );
-    }
   }
 
   List<String> list = [
@@ -145,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(12),
                                     icon: Icon(Icons.more_horiz,
                                         color: Colors.black),
+                                    underline: Container(),
                                     hint: null,
                                     items: list.map((item) {
                                       return DropdownMenuItem(

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 
 import 'Feature/addnotescreen/note_provider.dart';
+import 'keys.dart';
 
 
 void main() {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: Keys.scaffoldMessengerKey,
       // debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
